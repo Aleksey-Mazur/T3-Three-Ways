@@ -1,7 +1,19 @@
-export default class Store {
-  #state = { moves: [] };
+const initialValue = { moves: [] };
 
-  constructor() {}
+export default class Store {
+  #state = initialValue;
+
+  constructor(players) {
+    this.players = players;
+  }
+
+  get game() {
+    const state = this.#getState();
+
+    const currentPlayer = this.players[state.moves.length % 2];
+
+    return { currentPlayer };
+  }
 
   #getState() {
     return this.#state;
