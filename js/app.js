@@ -178,9 +178,23 @@ function init() {
     console.log(event);
   });
 
-  view.bindPlayerMoveEvent(event => {
-    view.setTurnIndicator(players[1]);
-    view.handlePlayerMove(event.target, players[1]);
+  view.bindPlayerMoveEvent(square => {
+    const existingMove = store.game.moves.find(
+      move => move.squareId === +square.id
+    );
+
+    if (existingMove) {
+      return;
+    }
+
+    // Place an icon of the current player in a square
+    view.handlePlayerMove(square, store.game.currentPlayer);
+
+    // Advance to the next state by pushing a move to the moves array
+    store.playerMove(+square.id);
+
+    // Set the next players turn indicator
+    view.setTurnIndicator(store.game.currentPlayer);
   });
 }
 
