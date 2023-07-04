@@ -169,8 +169,7 @@ function init() {
   console.log(store.game);
 
   view.bindGameResetEvent(event => {
-    console.log('Reset event');
-    console.log(event);
+    view.closeModal();
   });
 
   view.bindNewRoundEvent(event => {
@@ -192,6 +191,16 @@ function init() {
 
     // Advance to the next state by pushing a move to the moves array
     store.playerMove(+square.id);
+
+    if (store.game.status.isComplete) {
+      view.openModal(
+        store.game.status.winner
+          ? `${store.game.status.winner.name} wins!`
+          : 'Tie!'
+      );
+
+      return;
+    }
 
     // Set the next players turn indicator
     view.setTurnIndicator(store.game.currentPlayer);
