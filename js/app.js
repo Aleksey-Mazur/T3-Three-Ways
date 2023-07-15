@@ -174,6 +174,12 @@ function init() {
     view.clearMoves();
     view.setTurnIndicator(store.game.currentPlayer);
 
+    view.updateScoreboard(
+      store.stats.playerWithStats[0].wins,
+      store.stats.playerWithStats[1].wins,
+      store.stats.ties
+    );
+
     console.log(store.stats);
   });
 
