@@ -50,7 +50,7 @@ export default class View {
   updateScoreboard(p1Wins, p2Wins, ties) {
     this.$.p1Wins.innerText = `${p1Wins} wins`;
     this.$.p2Wins.innerText = `${p2Wins} wins`;
-    this.$.ties.innerText = `${ties} wins`;
+    this.$.ties.innerText = ties;
   }
 
   openModal(message) {
@@ -66,6 +66,16 @@ export default class View {
   clearMoves() {
     this.$$.squares.forEach(square => {
       square.replaceChildren();
+    });
+  }
+
+  initilizeMoves(moves) {
+    this.$$.squares.forEach(square => {
+      const existingMove = moves.find(move => move.squareId === +square.id);
+
+      if (existingMove) {
+        this.handlePlayerMove(square, existingMove.player);
+      }
     });
   }
 
