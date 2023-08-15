@@ -15,6 +15,7 @@ export default class View {
     this.$.p1Wins = this.#qs('[data-id="p1-wins"]');
     this.$.p2Wins = this.#qs('[data-id="p2-wins"]');
     this.$.ties = this.#qs('[data-id="ties"]');
+    this.$.grid = this.#qs('[data-id="grid"]');
 
     //Element lists
     this.$$.squares = this.#qsAll('[data-id="square"]');
@@ -65,9 +66,7 @@ export default class View {
   }
 
   bindPlayerMoveEvent(handler) {
-    this.$$.squares.forEach(square => {
-      square.addEventListener('click', () => handler(square));
-    });
+    this.#delegate(this.$.grid, '[data-id="square"]', 'click', handler);
   }
 
   /**
@@ -163,5 +162,13 @@ export default class View {
     if (!elList) throw new Error('Could not find elements');
 
     return elList;
+  }
+
+  #delegate(el, selector, eventKey, handler) {
+    el.addEventListener(eventKey, event => {
+      if (event.target.matches(selector)) {
+        handler(event.target);
+      }
+    });
   }
 }
