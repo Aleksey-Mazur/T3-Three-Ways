@@ -1,6 +1,7 @@
 import Store from './store.js';
 import View from './view.js';
 
+// Our players "config" - defines icons, colors, name, etc.
 const players = [
   {
     id: 1,
@@ -16,22 +17,32 @@ const players = [
   },
 ];
 
+// MVC pattern
 function init() {
+  // "View"
   const view = new View();
+
+  // "Model"
   const store = new Store('live-t3-storage-key', players);
 
-  // Current tab state changes
+  // "Controller" logic (event listeners + handlers)
+
+  /**
+   * Listen for changes to the game state, re-render view when change occurs.
+   *
+   * The 'statechange' event is a custom Event defined in the Store class.
+   */
   store.addEventListener('statechange', () => {
     view.render(store.game, store.stats);
   });
 
-  // A different tab state changes
+  // When 2 players are playing from different browser tabs, listen for changes
   window.addEventListener('storage', () => {
     console.log('State changed from another tab');
     view.render(store.game, store.stats);
   });
 
-  // The first load of the document
+  // When the HTML document first loads, render the view based on the current state
   view.render(store.game, store.stats);
 
   view.bindGameResetEvent(event => {
