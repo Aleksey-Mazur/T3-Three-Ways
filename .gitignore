@@ -142,3 +142,6 @@ dist
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/node
+
+# Bundle w/ react lib
+react/public/bundle.js
